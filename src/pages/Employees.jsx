@@ -32,6 +32,7 @@ export default function Employees() {
   useEffect(() => setPage(1), [q, dept, status, sort]);
 
   const onSort = (key) => setSort((s) => ({ key, dir: s.key === key && s.dir === 'asc' ? 'desc' : 'asc' }));
+console.log("test");
 
   const list = useMemo(() => {
     const s = q.toLowerCase();
