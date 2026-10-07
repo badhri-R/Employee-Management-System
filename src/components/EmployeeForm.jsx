@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { DEPTS } from '../utils/storage';
 
 const EMPTY = { id: '', name: '', email: '', phone: '', department: '', designation: '', joiningDate: '', salary: '', status: 'Active' };
@@ -33,27 +38,27 @@ export default function EmployeeForm({ initial, otherIds, onSubmit, onCancel, ti
   };
 
   return (
-    <form className="card form" onSubmit={submit} noValidate>
-      <h2>{title}</h2>
-      <div className="grid">
+    <Card className="max-w-[700px]"><form className="grid gap-4" onSubmit={submit} noValidate>
+      <h2 className="text-xl font-semibold">{title}</h2>
+      <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
         {FIELDS.map(([k, label, type]) => (
-          <label key={k}>{label}
+          <Label key={k}>{label}
             {k === 'department' ? (
-              <select value={d[k]} onChange={set(k)}><option value="">Select</option>{DEPTS.map((x) => <option key={x}>{x}</option>)}</select>
+              <Select value={d[k]} onChange={set(k)}><option value="">Select</option>{DEPTS.map((x) => <option key={x}>{x}</option>)}</Select>
             ) : k === 'status' ? (
-              <select value={d[k]} onChange={set(k)}><option>Active</option><option>Inactive</option></select>
+              <Select value={d[k]} onChange={set(k)}><option>Active</option><option>Inactive</option></Select>
             ) : (
-              <input type={type || 'text'} value={d[k]} onChange={set(k)} disabled={k === 'id' && !!initial} />
+              <Input type={type || 'text'} value={d[k]} onChange={set(k)} disabled={k === 'id' && !!initial} />
             )}
-            {err[k] && <small className="error">{err[k]}</small>}
-          </label>
+            {err[k] && <small className="text-[13px] font-normal text-destructive">{err[k]}</small>}
+          </Label>
         ))}
       </div>
-      {saveErr && <p className="error">✕ Unable to save employee.</p>}
-      <div className="row end">
-        <button type="button" onClick={onCancel}>Cancel</button>
-        <button className="primary">Save Employee</button>
+      {saveErr && <p className="text-[13px] text-destructive">✕ Unable to save employee.</p>}
+      <div className="flex justify-end gap-2">
+        <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
+        <Button type="submit">Save Employee</Button>
       </div>
-    </form>
+    </form></Card>
   );
 }

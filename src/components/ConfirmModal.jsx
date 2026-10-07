@@ -1,15 +1,17 @@
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function ConfirmModal({ title, children, onCancel, onConfirm, confirmText = 'Delete' }) {
   return (
-    <div className="overlay" onClick={onCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h3>{title}</h3>
-        {children}
-        <div className="row end">
-          <button onClick={onCancel}>{onConfirm ? 'Cancel' : 'Close'}</button>
-          {onConfirm && <button className="danger" onClick={onConfirm}>{confirmText}</button>}
-        </div>
-      </div>
-    </div>
+    <Dialog open onOpenChange={(o) => !o && onCancel()}>
+      <DialogContent aria-describedby={undefined}>
+        <DialogHeader><DialogTitle>{title}</DialogTitle></DialogHeader>
+        <div className="grid gap-1 text-sm">{children}</div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onCancel}>{onConfirm ? 'Cancel' : 'Close'}</Button>
+          {onConfirm && <Button variant="destructive" onClick={onConfirm}>{confirmText}</Button>}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getEmployees } from '../utils/storage';
 
 export default function Dashboard() {
@@ -6,7 +7,6 @@ export default function Dashboard() {
   const active = list.filter((e) => e.status === 'Active').length;
   const depts = new Set(list.map((e) => e.department)).size;
 
-  
   const cards = [
     ['Total Employees', list.length, '/employees'],
     ['Active Employees', active, '/employees?status=Active'],
@@ -16,12 +16,14 @@ export default function Dashboard() {
 
   return (
     <>
-      <h2>Dashboard</h2>
-      <div className="cards">
+      <h2 className="mb-4 text-2xl font-semibold">Dashboard</h2>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
         {cards.map(([t, n, to]) => (
-          <Link className="card stat" key={t} to={to}>
-            <span>{t}</span>
-            <b>{n}</b>
+          <Link key={t} to={to}>
+            <Card className="transition-shadow hover:shadow-md">
+              <CardHeader><CardTitle className="text-sm font-normal text-muted-foreground">{t}</CardTitle></CardHeader>
+              <CardContent><b className="text-3xl">{n}</b></CardContent>
+            </Card>
           </Link>
         ))}
       </div>

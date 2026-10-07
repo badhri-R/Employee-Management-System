@@ -1,3 +1,8 @@
+import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 const COLS = [
   ['id', 'ID'], ['name', 'Name'], ['email', 'Email'], ['department', 'Department'],
   ['joiningDate', 'Joining Date'], ['salary', 'Salary'], ['status', 'Status'],
@@ -6,32 +11,32 @@ const COLS = [
 export default function EmployeeTable({ rows, sort, onSort, onView, onEdit, onDelete }) {
   const arrow = (k) => (sort.key === k ? (sort.dir === 'asc' ? ' ▲' : ' ▼') : ' ↕');
   return (
-    <div className="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            {COLS.map(([k, label]) => (
-              <th key={k} className="sortable" onClick={() => onSort(k)}>{label}{arrow(k)}</th>
-            ))}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length === 0 && <tr><td colSpan={8}>No employees found.</td></tr>}
-          {rows.map((e) => (
-            <tr key={e.id}>
-              <td>{e.id}</td><td>{e.name}</td><td>{e.email}</td><td>{e.department}</td>
-              <td>{e.joiningDate}</td><td>₹{Number(e.salary).toLocaleString('en-IN')}</td>
-              <td><span className={`badge ${e.status}`}>{e.status}</span></td>
-              <td className="actions">
-                <button onClick={() => onView(e)}>👁</button>
-                <button onClick={() => onEdit(e.id)}>✏️</button>
-                <button onClick={() => onDelete(e)}>🗑</button>
-              </td>
-            </tr>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {COLS.map(([k, label]) => (
+            <TableHead key={k} className="cursor-pointer select-none hover:bg-muted" onClick={() => onSort(k)}>{label}{arrow(k)}</TableHead>
           ))}
-        </tbody>
-      </table>
-    </div>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {rows.length === 0 && <TableRow><TableCell colSpan={8}>No employees found.</TableCell></TableRow>}
+        {rows.map((e) => (
+          <TableRow key={e.id}>
+            <TableCell>{e.id}</TableCell><TableCell>{e.name}</TableCell><TableCell>{e.email}</TableCell><TableCell>{e.department}</TableCell>
+            <TableCell>{e.joiningDate}</TableCell><TableCell>₹{Number(e.salary).toLocaleString('en-IN')}</TableCell>
+            <TableCell><Badge variant={e.status === 'Active' ? 'success' : 'danger'}>{e.status}</Badge></TableCell>
+            <TableCell>
+              <div className="flex gap-1">
+                <Button variant="ghost" size="icon" aria-label="View" onClick={() => onView(e)}><Eye /></Button>
+                <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => onEdit(e.id)}><Pencil /></Button>
+                <Button variant="ghost" size="icon" aria-label="Delete" className="text-destructive hover:text-destructive" onClick={() => onDelete(e)}><Trash2 /></Button>
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

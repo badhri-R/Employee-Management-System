@@ -1,12 +1,14 @@
+import { Button } from '@/components/ui/button';
+
 export default function Pagination({ page, pages, onChange }) {
   if (pages <= 1) return null;
   return (
-    <div className="pager">
-      <button disabled={page === 1} onClick={() => onChange(page - 1)}>Previous</button>
+    <div className="flex flex-wrap gap-1 my-3">
+      <Button variant="outline" size="sm" disabled={page === 1} onClick={() => onChange(page - 1)}>Previous</Button>
       {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-        <button key={n} className={n === page ? 'active' : ''} onClick={() => onChange(n)}>{n}</button>
+        <Button key={n} size="sm" variant={n === page ? 'default' : 'outline'} onClick={() => onChange(n)}>{n}</Button>
       ))}
-      <button disabled={page === pages} onClick={() => onChange(page + 1)}>Next</button>
+      <Button variant="outline" size="sm" disabled={page === pages} onClick={() => onChange(page + 1)}>Next</Button>
     </div>
   );
 }

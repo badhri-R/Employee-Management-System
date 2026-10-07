@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { login } from '../utils/storage';
 
 export default function Login() {
@@ -18,16 +22,18 @@ export default function Login() {
   };
 
   return (
-    <div className="login">
-      <form className="card" onSubmit={submit} noValidate>
-        <h2>Employee Management</h2>
-        <label>Email<input value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
-          {err.email && <small className="error">{err.email}</small>}</label>
-        <label>Password<input type="password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
-          {err.password && <small className="error">{err.password}</small>}</label>
-        {err.form && <p className="error">{err.form}</p>}
-        <button className="primary">Login</button>
-      </form>
+    <div className="grid min-h-screen place-items-center">
+      <Card className="w-[min(380px,92vw)]">
+        <form className="grid gap-4" onSubmit={submit} noValidate>
+          <CardHeader><CardTitle className="text-xl">Employee Management</CardTitle></CardHeader>
+          <Label>Email<Input value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
+            {err.email && <small className="text-[13px] font-normal text-destructive">{err.email}</small>}</Label>
+          <Label>Password<Input type="password" value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
+            {err.password && <small className="text-[13px] font-normal text-destructive">{err.password}</small>}</Label>
+          {err.form && <p className="text-[13px] text-destructive">{err.form}</p>}
+          <Button type="submit">Login</Button>
+        </form>
+      </Card>
     </div>
   );
 }
